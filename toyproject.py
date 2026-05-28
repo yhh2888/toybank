@@ -28,6 +28,9 @@ import registry
 import addOn
 import accounts
 
+def tempFunction():
+    print(f'tempFunction() CALLED!!')
+
 class UserSystem:
     def __init__(self):
         self.users = {
