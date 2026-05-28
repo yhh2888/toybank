@@ -26,7 +26,7 @@ my dashboard service
 # --------------------------------------------------------------------
 import registry
 import addOn
-import accounts
+# import accounts
 
 class UserSystem:
     def __init__(self):
@@ -48,24 +48,43 @@ class UserSystem:
         # registry.py의 login 함수를 호출하여 로그인 처리를 합니다.
 
     def mainMenu(self):
-        registry.mainMenu()
-        # registry.py의 mainMenu 함수를 호출하여 메인 메뉴를 처리합니다.
+        while True:
+            userSelectedNumber = int(input('1. 회원가입, 2. 로그인, 3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, 6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료'))
+            if userSelectedNumber == 1:
+                self.register()
+            elif userSelectedNumber == 2:
+                self.login()
+            elif userSelectedNumber == 3:
+                self.deleteUser()
+            elif userSelectedNumber == 4:
+                self.modifyUser()
+            elif userSelectedNumber == 5:
+                self.logout()
+            elif userSelectedNumber == 6:
+                self.memoMenu()
+            elif userSelectedNumber == 7:
+                self.todoMenu()
+            elif userSelectedNumber == 8:
+                self.clock()
+            elif userSelectedNumber == 99:
+                print("프로그램을 종료합니다.")
+                break
 
-    def modifyAccount(self):
-        accounts.modifyAccount(self.accounts)
-        # accounts.py의 modifyAccount 함수를 호출하여 계좌 정보를 수정합니다. accounts 딕셔너리를 전달하여 계좌 정보를 업데이트할 수 있도록 합니다.
+    # def modifyAccount(self):
+    #     accounts.modifyAccount(self.accounts)
+    #     # accounts.py의 modifyAccount 함수를 호출하여 계좌 정보를 수정합니다. accounts 딕셔너리를 전달하여 계좌 정보를 업데이트할 수 있도록 합니다.
 
-    def deleteAccount(self):
-        accounts.deleteAccount(self.accounts)
-        # accounts.py의 deleteAccount 함수를 호출하여 계좌를 삭제합니다. accounts
+    # def deleteAccount(self):
+    #     accounts.deleteAccount(self.accounts)
+    #     # accounts.py의 deleteAccount 함수를 호출하여 계좌를 삭제합니다. accounts
 
-    def viewAccount(self):
-        accounts.viewAccount(self.accounts)
-        # accounts.py의 viewAccount 함수를 호출하여 계좌 정보를 조회합니다. accounts
+    # def viewAccount(self):
+    #     accounts.viewAccount(self.accounts)
+    #     # accounts.py의 viewAccount 함수를 호출하여 계좌 정보를 조회합니다. accounts
 
-    def sendMoney(self):
-        accounts.sendMoney(self.accounts)
-        # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다. 
+    # def sendMoney(self):
+    #     accounts.sendMoney(self.accounts)
+    #     # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다. 
 
     def deleteUser(self):
         registry.deleteUser(self.accounts)
@@ -91,11 +110,7 @@ class UserSystem:
         addOn.clock()
         # addOn.py의 clock 함수를 호출하여 시계를 표시합니다.
 
-    def save(self):
-        pass
 
-    def load(self):
-        pass
-
-
-
+if __name__ == "__main__":
+    userSystem = UserSystem()
+    userSystem.deleteUser()
