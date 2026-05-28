@@ -49,7 +49,8 @@ class UserSystem:
 
     def mainMenu(self):
         while True:
-            userSelectedNumber = int(input('1. 회원가입, 2. 로그인, 3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, 6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료'))
+            userSelectedNumber = int(input('1. 회원가입, 2. 로그인, 3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, ' \
+                               '6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료 : '))
             if userSelectedNumber == 1:
                 self.register()
             elif userSelectedNumber == 2:
@@ -113,4 +114,4 @@ class UserSystem:
 
 if __name__ == "__main__":
     userSystem = UserSystem()
-    userSystem.deleteUser()
+    userSystem.mainMenu()
