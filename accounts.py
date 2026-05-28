@@ -5,43 +5,49 @@
 
 import UserSystem
 
-
 UserSystem. 
-
 
 userId = int(input('ID:'))
 accountNum = int(input('계좌번호:'))
 
 class Account:
    
-    accountsDict = {}
-    userTotalBalence = {}
+accountsDict = {}
+userTotalBalence = {}
 
-    def __init__(self, id, account, balance):
-        self.key = id 
-        self.userdata1 = account
-        self.userdata2 = balance
+def __init__(self, id, account, balance):
+        self.idkey = id 
+        self.useracc = account
+        self.userbudget = balance
        
         Account.accountsDict[id] = account
         userTotalBalence.append(balance)
-
-    def print1(self):
+        
+def isaccount(self):
     
-        if accountNum in accountsDict:
+    if accountNum in accountsDict:
             return '계좌가 이미 있습니다.'
-        else:
+    else:
             return '계좌가 없습니다.'
     
-    def Deposit(self):
-
+def Deposit(self):
         userDeposit= int(input('입금액을 입력하세요:'))
         userTotalBalence += userDeposit
+        return userTotalBalence
     
-    def Withdrawal(self):   
+def Withdrawal(self):   
+        userwithdrawal = int(input('출금액을 입력하세요:'))
+        userTotalBalence += userwithdrawal
+        return userTotalBalence
 
-    def imp    
+def DepWithInfos(self):  
+    print(f'전체입출금 내역: {userTotalBalence}')
 
-    def manageAccount(self):
+def manageAccount(self):
+    userSelectedNumber = int(input('1. 계좌 추가(구현가능?), 2. 계좌 삭제, 99. 종료'))  
+    if userSelectedNumber == 1:
+        input('계좌 번호를 입력:')
+        append()  
         
 
 
