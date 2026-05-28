@@ -65,27 +65,31 @@ class UserSystem:
 
     def sendMoney(self):
         accounts.sendMoney(self.accounts)
-        # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다.
+        # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다. 
 
     def deleteUser(self):
-        accounts.deleteUser(self.accounts)
+        registry.deleteUser(self.accounts)
         # accounts.py의 deleteUser 함수를 호출하여 회원을 삭제합니다. accounts 딕셔너리를 전달하여 회원 정보를 삭제할 수 있도록 합니다.
 
     def modifyUser(self):
-        pass
+        registry.modifyUser(self.accounts)
+        # accounts.py의 modifyUser 함수를 호출하여 회원 정보를 수정합니다. accounts 딕셔너리를 전달하여 회원 정보를 업데이트할 수 있도록 합니다.
 
     def logout(self):
-        pass
+        registry.logout()
+        # registry.py의 logout 함수를 호출하여 로그아웃 처리를 합니다.
 
     def memoMenu(self):
-        pass
+        addOn.memoMenu(self.accounts, self.memos)
+        # addOn.py의 memoMenu 함수를 호출하여 메모 메뉴를 처리합니다. accounts 딕셔너리와 memos 딕셔너리를 전달하여 메모 기능을 구현할 수 있도록 합니다.
 
     def todoMenu(self):
         addOn.todoMenu(self.accounts, self.todos)
         # addOn.py의 todoMenu 함수를 호출하여 투두 리스트 메뉴를 처리합니다. accounts 딕셔너리와 todos 딕셔너리를 전달하여 투두 리스트 기능을 구현할 수 있도록 합니다.
 
     def clock(self):
-        pass
+        addOn.clock()
+        # addOn.py의 clock 함수를 호출하여 시계를 표시합니다.
 
     def save(self):
         pass
