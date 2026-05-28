@@ -3,24 +3,36 @@
 #     - 회원 1인당 N개의 계좌만 관리
 #     - 입/출금 내역 
 
+# 계좌별로 들어가서 입출금 내역을 확인하는게 좋겠다
+
+import datetime
+
 
 class Account:
    
-    def __init__(self, id, account, balance):
+    def __init__(self, id, accountNum, balance):
 
         self.userid = id
-        self.account = account
+        self.accountNum = accountNum
         self.balance = balance  
-        self.userAccountDict = {}   
+        self.userAccountDict = {} 
+        self.userAccountFlow = {
+           계좌번호:
+            입금: []
+            출금: []
+        }
+        self.totalDeposit = []
+        self.totalwithdrawal = []
+
 
     def userAccountInfos(self): 
 
-        self.account = int(input('계좌 번호를 입력하세요.'))
-        self.balance = input('잔액을 입력하세요.')
+        self.accountNum = int(input('계좌 번호를 입력하세요.'))
+        self.balance = int(input('잔액을 입력하세요.'))
     
         self.userAccountDict[self.userid] = {  
             'userid': self.userid,                                             
-            'account': self.account,                         
+            'accountNum': self.accountNum,                         
             'balance': self.balance,
         }
 
@@ -28,7 +40,8 @@ class Account:
 
     def viewAccount(self):  
 
-        print(f'전체입출금 내역: {self.userAccountDict[self.userid]}')
+        print(f'계좌 잔액확인 {self.userAccountDict}')
+        print(f'입금내역: {self.totalDeposit}, 출금내역: {self.totalwithdrawal}')
 
         return self.userAccountDict[self.userid]
             
@@ -49,7 +62,11 @@ class Account:
             else:
                 passedDeposit = userAddDeposit 
                      
-                self.userAccountDict[self.userid][depositaccountNum] += passedDeposit
+                self.userAccountDict[self.userid][depositaccountNum] += passedDeposit 
+
+                depositTime = datetime.datetime.now()
+
+                self.totalDeposit.append((passedDeposit,depositTime))
         else: 
             print('계좌번호가 맞지 않습니다. 다시 입력해주세요.')
             return
@@ -72,6 +89,11 @@ class Account:
                 passedWithdrawal = userAddWithdrawal  
 
             self.userAccountDict[self.userid][withdrawalAccountNum] += passedWithdrawal
+
+            withdrawalTime = datetime.datetime.now()
+
+            self.totalwithdrawal.append((passedWithdrawal,withdrawalTime))
+
         else: 
             print('계좌번호를 다시 입력해주세요.')
 
@@ -134,6 +156,7 @@ class Account:
 
                 
 user1info = Account('tjdwlsl888', 12345678, 10000) 
+   
 
 
 
