@@ -15,7 +15,7 @@ accountNum = int(input('계좌번호:'))
 class Account:
    
     accountsDict = {}
-    userBalence = []
+    userTotalBalence = {}
 
     def __init__(self, id, account, balance):
         self.key = id 
@@ -23,7 +23,7 @@ class Account:
         self.userdata2 = balance
        
         Account.accountsDict[id] = account
-        userBalence.append(balance)
+        userTotalBalence.append(balance)
 
     def print1(self):
     
@@ -31,13 +31,13 @@ class Account:
             return '계좌가 이미 있습니다.'
         else:
             return '계좌가 없습니다.'
-        
-
+    
     def Deposit(self):
-        userBalence
+
+        userDeposit= int(input('입금액을 입력하세요:'))
+        userTotalBalence += userDeposit
     
     def Withdrawal(self):   
-
 
     def imp    
 
