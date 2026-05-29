@@ -5,10 +5,11 @@ TODO_DELETE = 4
 TODO_END    = 0
 
 import time
+import os
 
 class TodoManager:
     def __init__(self):
-        self.filePath = 'C:/lge/ToyBank/toybank/todolist.txt', 'a'
+        self.filePath = os.getcwd() + '/todolist.txt'
   
     def gotDay(self):
         return time.strftime('%Y년%m월%d일')
@@ -18,14 +19,14 @@ class TodoManager:
    
     def add_new_todo(self):
         userInput = input('입력: ')
-        with open('C:/lge/ToyBank/toybank/todolist.txt', 'a') as file:
-            file.write(f'[{self.gotDay()}|{self.getTime()}] [미완료] {userInput}\n')
-
+        with open(self.filePath, 'a') as file:
+            file.write(f'[{self.gotDay()} | {self.getTime()}] [미완료] {userInput}\n')
+            print('일정이 등록되었습니다.')
             return userInput
         
     def ask_next_step(self):
         while True:
-            choice = int(input('1. 일정 추가 등록    2.  처음으로'))
+            choice = int(input('1. 일정 추가 등록    2.  처음으로 :'))
             if choice == 1:
                 print('추가 등록할 일정을 추가해주세요.')
                 self.add_new_todo()
@@ -39,7 +40,7 @@ class TodoManager:
     
     def showTodoIist(self):
         todoIist = []
-        file = open('C:/lge/ToyBank/toybank/todolist.txt', 'r')
+        file = open(self.filePath, 'r')
         readResult =  file.read()
         todoIist = readResult.splitlines()
         isRunning = True
@@ -55,7 +56,7 @@ class TodoManager:
                 newContent = input('입력:')
                 todoIist[targetNumber - 1] = f'[{self.gotDay()}|{self.getTime()}] {newContent}'
 
-                with open('C:/lge/ToyBank/toybank/todolist.txt', 'w') as file:
+                with open(self.filePath, 'w') as file:
                     for todo in todoIist:
                         file.write(f'{todo}\n')
 
@@ -64,10 +65,14 @@ class TodoManager:
                 del todoIist[targetNumber - 1]
                 print('삭제완료되었습니다.')
 
-                with open('C:/lge/ToyBank/toybank/todolist.txt', 'w') as file:
+                with open(self.filePath, 'w') as file:
                     for todo in todoIist:
                         file.write(f'{todo}\n')
 
             elif editOrDelete == TODO_END:
                 print('다시 돌아갑니다.')
                 isRunning = False
+
+if __name__ == "__main__":
+    manager = TodoManager()
+    manager.ask_next_step()

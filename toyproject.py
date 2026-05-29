@@ -26,6 +26,8 @@ my dashboard service
 # --------------------------------------------------------------------
 import registry
 import addOn
+import todolistnumber
+
 # import accounts
 
 class UserSystem:
@@ -38,38 +40,54 @@ class UserSystem:
         self.accounts = {}
         self.memos = {}
         self.todos = {}
+        self.todolists = todolistnumber.TodoManager()
     
     def register(self):
         registry.register(self.accounts)
         # registry.py의 register 함수를 호출하여 회원가입을 처리합니다. accounts 딕셔너리를 전달하여 새로운 계좌 정보를 저장할 수 있도록 합니다.
 
     def login(self):
-        registry.login(self.users)
+        userId = registry.login(self.users)
+        return userId
         # registry.py의 login 함수를 호출하여 로그인 처리를 합니다.
 
     def mainMenu(self):
         while True:
-            userSelectedNumber = int(input('1. 회원가입, 2. 로그인, 3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, ' \
-                               '6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료 : '))
-            if userSelectedNumber == 1:
+            if self.currentUser:
+                userSelectedNumber = input('3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, ' \
+                                        '6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료 : ')
+            else:
+                userSelectedNumber = input('1. 로그인, 2. 회원가입, ' \
+                                        '8. 시계 표시, 99. 종료 : ')
+            
+            if isinstance(userSelectedNumber, str) and userSelectedNumber.isdigit():
+                userSelectedNumber = int(userSelectedNumber)
+            else:
+                print("잘못된 입력입니다. 숫자를 입력해주세요.")
+                continue
+
+            if userSelectedNumber == 1 and not self.currentUser:
+                userId = self.login()
+                self.currentUser = userId
+            elif userSelectedNumber == 2 and not self.currentUser:
                 self.register()
-            elif userSelectedNumber == 2:
-                self.login()
-            elif userSelectedNumber == 3:
+            elif userSelectedNumber == 3 and self.currentUser:
                 self.deleteUser()
-            elif userSelectedNumber == 4:
+            elif userSelectedNumber == 4 and self.currentUser:
                 self.modifyUser()
-            elif userSelectedNumber == 5:
+            elif userSelectedNumber == 5 and self.currentUser:
                 self.logout()
-            elif userSelectedNumber == 6:
+            elif userSelectedNumber == 6 and self.currentUser:
                 self.memoMenu()
-            elif userSelectedNumber == 7:
+            elif userSelectedNumber == 7 and self.currentUser:
                 self.todoMenu()
             elif userSelectedNumber == 8:
                 self.clock()
             elif userSelectedNumber == 99:
                 print("프로그램을 종료합니다.")
                 break
+            else:
+                print("잘못된 입력입니다. 다시 시도해주세요.")
 
     # def modifyAccount(self):
     #     accounts.modifyAccount(self.accounts)
@@ -102,13 +120,24 @@ class UserSystem:
     def memoMenu(self):
         addOn.memoMenu(self.accounts, self.memos)
         # addOn.py의 memoMenu 함수를 호출하여 메모 메뉴를 처리합니다. accounts 딕셔너리와 memos 딕셔너리를 전달하여 메모 기능을 구현할 수 있도록 합니다.
-
+    
     def todoMenu(self):
-        addOn.todoMenu(self.accounts, self.todos)
-        # addOn.py의 todoMenu 함수를 호출하여 투두 리스트 메뉴를 처리합니다. accounts 딕셔너리와 todos 딕셔너리를 전달하여 투두 리스트 기능을 구현할 수 있도록 합니다.
+        while True:
+            todoNumber = int(input('1. 일정 작성하기    2. 일정 수정하기    3. 처음으로 돌아가기 : '))
+            if todoNumber == 1:
+                self.todolists.ask_next_step()
+            elif todoNumber == 2:
+                self.todolists.showTodoIist()
+            elif todoNumber == 3:
+                print('처음으로 돌아갑니다.')
+                break
+            else:
+                print('잘못된 입력입니다. 다시 입력해주세요.')
+
+        # todolistnumber.py의 todoMenu 함수를 호출하여 투두 리스트 메뉴를 처리합니다. accounts 딕셔너리와 todos 딕셔너리를 전달하여 투두 리스트 기능을 구현할 수 있도록 합니다.
 
     def clock(self):
-        addOn.clock()
+        print(f"\n {self.todolists.gotDay()} | {self.todolists.getTime()} \n")
         # addOn.py의 clock 함수를 호출하여 시계를 표시합니다.
 
 
