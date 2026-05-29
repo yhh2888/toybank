@@ -9,9 +9,9 @@ while todo:
 
     if listSelection == TODO_WRITE:
         print('----등록할 일정을 적어주세요----.')
-        todoContent = manager.add_new_todo()
+        todoContent = manager.addNewTodo()
         print(f'[{manager.gotDay()}|{manager.getTime()}] {todoContent}')
-        manager.ask_next_step()
+        manager.askNextStep()
 
     elif listSelection == TODO_READ:
         print('----전체 일정 조회----')
