@@ -46,7 +46,7 @@ class Account:
                 if selectedNum == 99:
 
                     userBalance = 0
-                    depositFlow = []
+                    depositFlow = []     
                     print('종료합니다.')
                     print(70*'-')
                     Flag = False
@@ -75,9 +75,9 @@ class Account:
                 
     def viewAccount(self):  
 
-        specificUserAccounts = self.userAccountDict[self.userid]
+        currentUserAccounts = self.userAccountDict[self.userid]
 
-        for acc, accinfo in specificUserAccounts.items():
+        for acc, accinfo in currentUserAccounts.items():
 
             balance = accinfo['balance']
             deposit =  accinfo['depositFlow']
@@ -153,9 +153,7 @@ class Account:
 
         else: 
             print('계좌번호를 다시 입력해주세요.')
-            print(70*'-')
-
-            return  
+            print(70*'-') 
  
     def modifyAccount(self):
 
@@ -218,16 +216,13 @@ class Account:
 
 
 
-
-
-
-user1info = Account('tjdwlsl888') 
-user1info.registUserAccount()
-user1info.addAccount()
-user1info.sendMoney()   
-user1info.withdrawal()  
-user1info.viewAccount()
-user1info.deleteAccount()
+# user1info = Account('tjdwlsl888') 
+# user1info.registUserAccount()
+# user1info.addAccount()
+# user1info.sendMoney()   
+# user1info.withdrawal()  
+# user1info.viewAccount()
+# user1info.deleteAccount()
    
 
 
