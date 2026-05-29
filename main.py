@@ -25,8 +25,7 @@ my dashboard service
 
 # --------------------------------------------------------------------
 import registry
-import addOn
-import todolistnumber
+import todoLists
 import accounts
 
 # import accounts
@@ -42,7 +41,7 @@ class UserSystem:
         self.accounts = {}
         self.memos = {}
         self.todos = {}
-        self.todolists = todolistnumber.TodoManager()
+        self.todolists = todoLists.TodoManager()
         self.accounts = accounts.Account()
         for users in self.users.keys():
             if users not in self.accounts.userAccountDict:
