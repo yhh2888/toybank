@@ -18,7 +18,7 @@ class TodoManager:
     def getTime(self):
         return time.strftime('%H시%M분')
    
-    def add_new_todo(self):
+    def addNewTodo(self):
         userInput = input('일정 입력: ')
         while True:
             deadline = input('마감일을 입력하세요: ')
@@ -33,12 +33,12 @@ class TodoManager:
             print(f'{userInput}등록이 완료 되었습니다.')
             return userInput
                 
-    def ask_next_step(self):
+    def askNextStep(self):
         while True:
             choice = int(input('1. 일정 추가 등록    2.  처음으로'))
             if choice == 1:
                 print('추가 등록할 일정을 추가해주세요.')
-                self.add_new_todo()
+                self.addNewTodo()
 
             elif choice == 2:
                 print('처음으로 돌아갑니다.')
