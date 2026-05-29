@@ -86,9 +86,15 @@ class Account:
             print(f'계좌번호: {acc}, 잔액: {balance}원, \n 예금 현황: {deposit}, \n 출금 현황: {withdrawal}')
             
     def sendMoney(self):
-                
+
+        if len(self.userAccountDict[self.userid]) == 0:
+            print("보유 중인 계좌가 없습니다. 먼저 계좌를 개설해주세요.")
+            print(70 * "-")
+            self.registUserAccount()           
+            return
+
         depositaccountNum = int(input('입금할 계좌번호를 입력하세요: '))
-        print(70*'-')
+        print(70*'-')   
 
         if  depositaccountNum in self.userAccountDict[self.userid]:
 
@@ -119,6 +125,12 @@ class Account:
 
         withdrawalAccountNum = int(input('출금할 계좌번호를 입력하세요: '))
         print(70*'-')
+
+        if len(self.userAccountDict[self.userid]) == 0:
+            print("보유 중인 계좌가 없습니다. 먼저 계좌를 개설해주세요.")
+            print(70 * "-")
+            self.registUserAccount()           
+            return
 
         if  withdrawalAccountNum in self.userAccountDict[self.userid]:
 
