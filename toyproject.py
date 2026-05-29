@@ -27,6 +27,7 @@ my dashboard service
 import registry
 import addOn
 import todolistnumber
+import accounts
 
 # import accounts
 
@@ -36,15 +37,22 @@ class UserSystem:
             "administrator": "1234",
             "userexample": "p@ssword"
         }
+        registry.loadData(self.users)
         self.currentUser = None
         self.accounts = {}
         self.memos = {}
         self.todos = {}
         self.todolists = todolistnumber.TodoManager()
-    
+        self.accounts = accounts.Account()
+        for users in self.users.keys():
+            if users not in self.accounts.userAccountDict:
+                self.accounts.userAccountDict[users] = {}
+        self.accounts.loadAccounts(self.accounts)
+
     def register(self):
-        registry.register(self.accounts)
+        registry.register(self.users)
         # registry.py의 register 함수를 호출하여 회원가입을 처리합니다. accounts 딕셔너리를 전달하여 새로운 계좌 정보를 저장할 수 있도록 합니다.
+        registry.loadData(self.users)
 
     def login(self):
         userId = registry.login(self.users)
@@ -54,11 +62,11 @@ class UserSystem:
     def mainMenu(self):
         while True:
             if self.currentUser:
-                userSelectedNumber = input('3. 회원탈퇴, 4. 회원정보 수정, 5. 로그아웃, ' \
-                                        '6. 메모 메뉴, 7. 투두 리스트 메뉴, 8. 시계 표시, 99. 종료 : ')
+                userSelectedNumber = input('3. 회원탈퇴   4. 회원정보 수정   5. 로그아웃   ' \
+                                        '6. 계좌 메뉴   7. 투두 리스트 메뉴   8. 시계 표시   99. 종료 : ')
             else:
-                userSelectedNumber = input('1. 로그인, 2. 회원가입, ' \
-                                        '8. 시계 표시, 99. 종료 : ')
+                userSelectedNumber = input('1. 로그인   2. 회원가입   ' \
+                                        '8. 시계 표시   99. 종료 : ')
             
             if isinstance(userSelectedNumber, str) and userSelectedNumber.isdigit():
                 userSelectedNumber = int(userSelectedNumber)
@@ -78,7 +86,7 @@ class UserSystem:
             elif userSelectedNumber == 5 and self.currentUser:
                 self.logout()
             elif userSelectedNumber == 6 and self.currentUser:
-                self.memoMenu()
+                self.accountsMenu()
             elif userSelectedNumber == 7 and self.currentUser:
                 self.todoMenu()
             elif userSelectedNumber == 8:
@@ -89,45 +97,66 @@ class UserSystem:
             else:
                 print("잘못된 입력입니다. 다시 시도해주세요.")
 
-    # def modifyAccount(self):
-    #     accounts.modifyAccount(self.accounts)
-    #     # accounts.py의 modifyAccount 함수를 호출하여 계좌 정보를 수정합니다. accounts 딕셔너리를 전달하여 계좌 정보를 업데이트할 수 있도록 합니다.
+    def accountsMenu(self):
+        while True:
+            userSelectedNumber = int(input('1. 계좌 추가, 2. 계좌 삭제, 3. 계좌 조회, 4. 송금하기, 99. 처음으로 돌아가기 : '))
+            print(70*'-')
+            if userSelectedNumber == 1:
+                self.addAccount()
+            elif userSelectedNumber == 2:
+                self.deleteAccount()
+            elif userSelectedNumber == 3:
+                self.viewAccount()
+            elif userSelectedNumber == 4:
+                self.sendMoney()
+            elif userSelectedNumber == 99:
+                print('종료하겠습니다.')
+                print(70*'-')
+                break
 
-    # def deleteAccount(self):
-    #     accounts.deleteAccount(self.accounts)
-    #     # accounts.py의 deleteAccount 함수를 호출하여 계좌를 삭제합니다. accounts
+    def addAccount(self):
+        self.accounts.addAccount(self.accounts, self.currentUser)
+        self.accounts.saveAccounts(self.accounts)
 
-    # def viewAccount(self):
-    #     accounts.viewAccount(self.accounts)
-    #     # accounts.py의 viewAccount 함수를 호출하여 계좌 정보를 조회합니다. accounts
+    def modifyAccount(self):
+         self.accounts.modifyAccount(self.accounts, self.currentUser)
+         self.accounts.saveAccounts(self.accounts)
+         # accounts.py의 modifyAccount 함수를 호출하여 계좌 정보를 수정합니다. accounts 딕셔너리를 전달하여 계좌 정보를 업데이트할 수 있도록 합니다.
 
-    # def sendMoney(self):
-    #     accounts.sendMoney(self.accounts)
-    #     # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다. 
+    def deleteAccount(self):
+        self.accounts.deleteAccount(self.accounts, self.currentUser)
+        self.accounts.saveAccounts(self.accounts)
+        # accounts.py의 deleteAccount 함수를 호출하여 계좌를 삭제합니다. accounts
+
+    def viewAccount(self):
+        self.accounts.viewAccount(self.accounts, self.currentUser)
+        self.accounts.saveAccounts(self.accounts)
+        # accounts.py의 viewAccount 함수를 호출하여 계좌 정보를 조회합니다. accounts
+
+    def sendMoney(self):
+        self.accounts.sendMoney(self.accounts, self.currentUser)
+        self.accounts.saveAccounts(self.accounts)
+        # accounts.py의 sendMoney 함수를 호출하여 송금 기능을 처리합니다. accounts 딕셔너리를 전달하여 송금 기능을 구현할 수 있도록 합니다. 
 
     def deleteUser(self):
-        registry.deleteUser(self.accounts)
+        registry.deleteUser(self.users)
         # accounts.py의 deleteUser 함수를 호출하여 회원을 삭제합니다. accounts 딕셔너리를 전달하여 회원 정보를 삭제할 수 있도록 합니다.
 
     def modifyUser(self):
-        registry.modifyUser(self.accounts)
+        registry.modifyUser(self.users)
         # accounts.py의 modifyUser 함수를 호출하여 회원 정보를 수정합니다. accounts 딕셔너리를 전달하여 회원 정보를 업데이트할 수 있도록 합니다.
 
     def logout(self):
-        registry.logout()
+        self.currentUser = registry.logout()
         # registry.py의 logout 함수를 호출하여 로그아웃 처리를 합니다.
 
-    def memoMenu(self):
-        addOn.memoMenu(self.accounts, self.memos)
-        # addOn.py의 memoMenu 함수를 호출하여 메모 메뉴를 처리합니다. accounts 딕셔너리와 memos 딕셔너리를 전달하여 메모 기능을 구현할 수 있도록 합니다.
-    
     def todoMenu(self):
         while True:
             todoNumber = int(input('1. 일정 작성하기    2. 일정 수정하기    3. 처음으로 돌아가기 : '))
             if todoNumber == 1:
-                self.todolists.ask_next_step()
+                self.todolists.askNextStep()
             elif todoNumber == 2:
-                self.todolists.showTodoIist()
+                self.todolists.showTodoList()
             elif todoNumber == 3:
                 print('처음으로 돌아갑니다.')
                 break

@@ -28,7 +28,7 @@ class TodoManager:
             else:
                 print('잘못입력하셨습니다. 다시 입력해주세요.')
 
-        with open(self.filePath, 'a') as file:
+        with open(self.filePath, 'a', encoding='utf-8') as file:
             file.write(f'[{self.gotDay()}|{self.getTime()}] [미완료] 마감일[{deadline}] {userInput}\n')
             print(f'{userInput}등록이 완료 되었습니다.')
             return userInput
@@ -48,9 +48,9 @@ class TodoManager:
             else:
                 print('번호를 잘못 입력했습니다. 다시 입력 해주세요.')
     
-    def showTodoIist(self):
+    def showTodoList(self):
         try:
-            file = open(self.filePath,'r')
+            file = open(self.filePath, 'r', encoding='utf-8')
             readResult =  file.read()
             file.close()
             todoIist = readResult.splitlines()
@@ -75,7 +75,7 @@ class TodoManager:
                 print('수정할 내용을 입력해주세요')
                 newContent = input('입력:')
                 todoIist[targetNumber - 1] = f'[{self.gotDay()}|{self.getTime()}] {newContent}'
-                with open(self.filePath, 'w') as file:
+                with open(self.filePath, 'w', encoding='utf-8') as file:
                     for todo in todoIist:
                         file.write(f'{todo}\n')
 
@@ -87,12 +87,12 @@ class TodoManager:
                             del todoIist[targetNumber - 1]
                             print('삭제완료되었습니다.')
 
-                            with open(self.filePath, 'w') as file:
+                            with open(self.filePath, 'w', encoding='utf-8') as file:
                                 for todo in todoIist:
                                     file.write(f'{todo}\n')
                             break
                         elif deleteChoice == 2:
-                            open(self.filePath, 'w').close()
+                            open(self.filePath, 'w', encoding='utf-8').close()
                             todoIist = []
                             break
 
@@ -105,11 +105,14 @@ class TodoManager:
 
             elif editOrDelete == TODO_STATUS:
                 targetNumber = int(input('완료할 일정의 번호 입력해주세요: '))
-                todoIist[targetNumber - 1] = todoIist[targetNumber - 1].replace('[미완료]', '[완료]')
-                with open(self.filePath, 'w') as file:
-                    for todo in todoIist:
-                        file.write(f'{todo}\n')
-
+                if 0 < targetNumber <= len(todoIist):
+                    todoIist[targetNumber - 1] = todoIist[targetNumber - 1].replace('[미완료]', '[완료]')
+                    with open(self.filePath, 'w', encoding='utf-8') as file:
+                        for todo in todoIist:
+                            file.write(f'{todo}\n')
+                    print('일정이 완료 처리되었습니다.')
+                else:
+                    print('유효하지 않은 번호입니다.')
 
             elif editOrDelete == TODO_END:
                 print('다시 돌아갑니다.')
