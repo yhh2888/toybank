@@ -56,7 +56,7 @@ class Account:
                     userBalance = int(input('입금액: '))
 
                     depositTime = time.strftime('%Y-%m-%d %H:%M')
-                    depositFlow = [(userBalance, depositTime)]
+                    depositFlow = [{userBalance : depositTime}]
                         
                     print('새로운 계좌가 탄생했네요! 축하드립니다.')
                     print(70*'-')
@@ -71,8 +71,7 @@ class Account:
                 'depositFlow': depositFlow,
                 'withdrawalFlow': []
         }
-
-                
+               
     def viewAccount(self):  
 
         currentUserAccounts = self.userAccountDict[self.userid]
@@ -110,7 +109,7 @@ class Account:
 
                 depositTime = time.strftime('%Y-%m-%d %H:%M')
 
-                self.userAccountDict[self.userid][depositaccountNum]['depositFlow'].append((passedDeposit,depositTime))
+                self.userAccountDict[self.userid][depositaccountNum]['depositFlow'].append({passedDeposit:depositTime})
         else: 
             print('계좌번호가 맞지 않습니다. 다시 입력해주세요.')
             print(70*'-')
@@ -149,7 +148,7 @@ class Account:
 
                 withdrawalTime = time.strftime('%Y-%m-%d %H:%M')
 
-                self.userAccountDict[self.userid][withdrawalAccountNum]['withdrawalFlow'].append((passedWithdrawal,withdrawalTime))
+                self.userAccountDict[self.userid][withdrawalAccountNum]['withdrawalFlow'].append({passedWithdrawal:withdrawalTime})
 
         else: 
             print('계좌번호를 다시 입력해주세요.')
@@ -160,69 +159,63 @@ class Account:
         userSelectedNumber = int(input('1. 계좌 추가, 2. 계좌 삭제, 99. 종료 :  '))
         print(70*'-')  
 
-        return userSelectedNumber       
+        Flag = True
 
-    def addAccount(self):
+        while Flag:
 
-        userChoiceNum = self.modifyAccount() 
-    
-        if userChoiceNum == 1:
+            if userSelectedNumber == 1:
+                return self.registUserAccount()
 
-            self.registUserAccount()
+            elif userSelectedNumber == 2:
+
+                return self.deleteAccount()
+
+            elif userSelectedNumber == 99:
+
+                return self.shutdownAccount()
+
+            else: 
+                print('오타입니다. 다시 입력해주세요.')            
             
     def deleteAccount(self):                
 
-        userChoiceNum = self.modifyAccount()  
+        print('계좌정보를 확인한 후 제거하고 싶은 계좌번호를 선택하세요')
+        print(70*'-')
 
-        while True:           
+        self.viewAccount()
 
-            if userChoiceNum == 2:
+        wantedDelAccounted = int(input('계좌번호를 입력하세요.'))
+        print(70*'-')
+       
+        while True:       
+                
+            if wantedDelAccounted in self.userAccountDict[self.userid]:
 
-                    print('계좌정보를 확인한 후 제거하고 싶은 계좌번호를 선택하세요')
-                    print(70*'-')
-                        
-                    self.viewAccount()
+                del self.userAccountDict[self.userid][wantedDelAccounted]
 
-                    wantedDelAccounted = int(input('계좌번호를 입력하세요.'))
-                    print(70*'-')
+                print(f'{wantedDelAccounted}가 삭제되었습니다.')
+                print(70*'-')
 
-                    if wantedDelAccounted in self.userAccountDict[self.userid]:
+                break
 
-                        del self.userAccountDict[self.userid][wantedDelAccounted]
-
-                        print(f'{wantedDelAccounted}가 삭제되었습니다.')
-                        print(70*'-')
-
-                        break
-
-                    else: 
-                        print('없는 계좌입니다. 다시 입력해주세요.') 
-                        print(70*'-')
+            else: 
+                print('없는 계좌입니다. 다시 입력해주세요.') 
+                print(70*'-')
 
     def shutdownAccount(self):
 
-        userChoiceNum = self.modifyAccount()    
+        print('프로그램을 종료하겠습니다. 이용해 주셔서 감사합니다.')
 
-        while True:
-
-            if userChoiceNum == 99:
-                print('종료하겠습니다.')
-                print(70*'-')
-                break
-                    
-            else: 
-                print('잘못 적었습니다. 다시 입력해주세요.')
-                print(70*'-')
+        print(70*'-')
 
 
-
-# user1info = Account('tjdwlsl888') 
-# user1info.registUserAccount()
-# user1info.addAccount()
-# user1info.sendMoney()   
-# user1info.withdrawal()  
-# user1info.viewAccount()
-# user1info.deleteAccount()
+user1info = Account('tjdwlsl888') 
+user1info.registUserAccount()
+user1info.modifyAccount()
+user1info.sendMoney()   
+user1info.withdrawal()  
+user1info.viewAccount()
+user1info.deleteAccount()
    
 
 
