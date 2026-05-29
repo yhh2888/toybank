@@ -35,7 +35,7 @@ class TodoManager:
                 
     def askNextStep(self):
         while True:
-            choice = int(input('1. 일정 추가 등록    2.  처음으로'))
+            choice = int(input('1. 일정 추가 등록    2. 처음으로'))
             if choice == 1:
                 print('추가 등록할 일정을 추가해주세요.')
                 self.addNewTodo()
@@ -43,16 +43,25 @@ class TodoManager:
             elif choice == 2:
                 print('처음으로 돌아갑니다.')
                 return
+            
 
             else:
                 print('번호를 잘못 입력했습니다. 다시 입력 해주세요.')
     
     def showTodoIist(self):
-        todoIist = []
-        file = open(self.filePath,'r')
-        readResult =  file.read()
-        todoIist = readResult.splitlines()
+        try:
+            file = open(self.filePath,'r')
+            readResult =  file.read()
+            file.close()
+            todoIist = readResult.splitlines()
+
+        except:
+            todoIist = []
         isRunning = True
+        if len(todoIist) == 0:
+            print('내용이 없습니다. 일정을 추가 해주세요.')
+            return
+        
         while isRunning:
             for i, todo in enumerate(todoIist, start=1):
                 if todo[:10] < self.gotDay():
@@ -61,24 +70,38 @@ class TodoManager:
             editOrDelete = int(input('3.일지 수정   4.일지 삭제  5.일지 완료 체크  0.처음메뉴로'))
 
             if editOrDelete == TODO_UPDATE:
+
                 targetNumber = int(input('수정할 일정의 번호 입력해주세요: '))
                 print('수정할 내용을 입력해주세요')
                 newContent = input('입력:')
                 todoIist[targetNumber - 1] = f'[{self.gotDay()}|{self.getTime()}] {newContent}'
-
                 with open(self.filePath, 'w') as file:
                     for todo in todoIist:
                         file.write(f'{todo}\n')
 
             elif editOrDelete == TODO_DELETE:
-                targetNumber = int(input('삭제할 일지 번호 입력해주세요: '))
-                del todoIist[targetNumber - 1]
-                print('삭제완료되었습니다.')
+                while True:
+                        deleteChoice = int(input('1. 일정 한 줄만 삭제   2.일정 전체 다 삭제   0.취소'))
+                        if deleteChoice == 1:
+                            targetNumber = int(input('삭제할 일지 번호 입력해주세요: '))
+                            del todoIist[targetNumber - 1]
+                            print('삭제완료되었습니다.')
 
-                with open(self.filePath, 'w') as file:
-                    for todo in todoIist:
-                        file.write(f'{todo}\n')
+                            with open(self.filePath, 'w') as file:
+                                for todo in todoIist:
+                                    file.write(f'{todo}\n')
+                            break
+                        elif deleteChoice == 2:
+                            open(self.filePath, 'w').close()
+                            todoIist = []
+                            break
 
+                        elif deleteChoice == 0:
+                            print('삭제를 취소하고 이전 메뉴로 돌아갑니다 ')
+                            break
+                        
+                        else:
+                            print('번호를 잘못 입력했습니다.다시 입력해주세요.')
 
             elif editOrDelete == TODO_STATUS:
                 targetNumber = int(input('완료할 일정의 번호 입력해주세요: '))
